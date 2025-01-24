@@ -1,7 +1,10 @@
 // Use implements and you must to use all methods
 // Or change abstract to mixin to use
-abstract class BaseViewModel extends BaseViewModelInputs
-    implements BaseViewModelOutputs {
+abstract class BaseViewModel
+    implements BaseViewModelInputs, BaseViewModelOutputs {
+  // BaseViewModel is an intermediate class of BVMInputs, BVMOutputs
+  // I think so :)
+
   // shared variables and functions that will be used through any view model.
 }
 
