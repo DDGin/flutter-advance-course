@@ -13,7 +13,7 @@ class LoginViewModel
 
   var loginObject = LoginObject("", "");
 
-  LoginUseCase _loginUseCase;
+  LoginUseCase? _loginUseCase; // TODO: remove ?
 
   LoginViewModel(this._loginUseCase);
 
@@ -39,17 +39,16 @@ class LoginViewModel
 
   @override
   login() async {
-    (await _loginUseCase.execute(
-            LoginUseCaseInput(loginObject.userName, loginObject.password)))
-        .fold(
-            (failure) => {
-                  // Left -> Failure (message)
-                  failure.message
-                },
-            (data) => {
-                  // Right -> Success (data)
-                  data.customer?.name
-                });
+    (await _loginUseCase?.execute(// TODO: remove ?
+        LoginUseCaseInput(loginObject.userName, loginObject.password)))?.fold(
+        (failure) => {
+              // Left -> Failure (message)
+              print(failure.message)
+            },
+        (data) => {
+              // Right -> Success (data)
+              print(data.customer?.name)
+            });
   }
 
   @override
