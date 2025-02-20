@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advance_course/data/data_source/remote_data_source.dart';
+import 'package:flutter_advance_course/data/network/network_info.dart';
+import 'package:flutter_advance_course/data/repository/repository_impl.dart';
+import 'package:flutter_advance_course/domain/repository/repository.dart';
+import 'package:flutter_advance_course/domain/usecase/login_usecase.dart';
 import 'package:flutter_advance_course/presentation/login/login_viewmodel.dart';
 import 'package:flutter_advance_course/presentation/resources/asset_manager.dart';
 import 'package:flutter_advance_course/presentation/resources/color_manager.dart';
 import 'package:flutter_advance_course/presentation/resources/string_manager.dart';
 import 'package:flutter_advance_course/presentation/resources/value_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../resources/route_manager.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -14,8 +21,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  LoginViewModel _viewModel =
-      LoginViewModel(null); // TODO: pass here login usecase
+  LoginViewModel _viewModel = LoginViewModel(_loginUseCase);
 
   TextEditingController _userNameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -44,11 +50,12 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return _getContentWidget();
   }
 
   Widget _getContentWidget() {
     return Scaffold(
+      backgroundColor: ColorManager.white,
       body: Container(
         padding: EdgeInsets.only(top: AppPadding.p20),
         color: ColorManager.white,
@@ -57,7 +64,7 @@ class _LoginViewState extends State<LoginView> {
             child: Form(
                 child: Column(
               children: [
-                SvgPicture.asset(ImageAssets.splashLogo),
+                Image(image: AssetImage(ImageAssets.splashLogo)),
                 SizedBox(height: AppSize.s28),
                 Padding(
                   padding: EdgeInsets.only(
@@ -100,12 +107,56 @@ class _LoginViewState extends State<LoginView> {
                 Padding(
                     padding: EdgeInsets.only(
                         left: AppPadding.p28, right: AppPadding.p28),
-                    child: StreamBuilder(
-                        stream: null, // TODO add me later
+                    child: StreamBuilder<bool>(
+                        stream: _viewModel.outputIsAllInputsValid,
                         builder: (context, snapshot) {
-                          return ElevatedButton(
-                              onPressed: () {}, child: Text(AppStrings.login));
-                        }))
+                          return SizedBox(
+                            width: double.infinity,
+                            height: AppSize.s40,
+                            child: ElevatedButton(
+                                // if snapshot.data
+                                // true => login
+                                // false => null
+                                // null => false => null
+                                onPressed: (snapshot.data ?? false)
+                                    ? () {
+                                        _viewModel.login();
+                                      }
+                                    : null,
+                                child: Text(AppStrings.login)),
+                          );
+                        })),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: AppPadding.p8,
+                      left: AppPadding.p28,
+                      right: AppPadding.p28),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, Routes.registerRoute);
+                          },
+                          child: Text(
+                            AppStrings.registerText,
+                            style: Theme.of(context).textTheme.titleMedium,
+                            textAlign: TextAlign.end,
+                          )),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, Routes.forgotPasswordRoute);
+                          },
+                          child: Text(
+                            AppStrings.forgetPassword,
+                            style: Theme.of(context).textTheme.titleMedium,
+                            textAlign: TextAlign.end,
+                          )),
+                    ],
+                  ),
+                )
               ],
             )),
             key: _formKey,

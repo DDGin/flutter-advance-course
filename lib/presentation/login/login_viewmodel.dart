@@ -7,13 +7,16 @@ import 'package:flutter_advance_course/presentation/common/freezed_data_classes.
 class LoginViewModel
     implements BaseViewModel, LoginViewModelInputs, LoginViewModelOutputs {
   StreamController _userNameStreamController =
-      StreamController<String>.broadcast();
+  StreamController<String>.broadcast();
   StreamController _passwordStreamController =
-      StreamController<String>.broadcast();
+  StreamController<String>.broadcast();
+
+  StreamController _isAllInputsValidStreamController =
+  StreamController<void>.broadcast();
 
   var loginObject = LoginObject("", "");
 
-  LoginUseCase? _loginUseCase; // TODO: remove ?
+  LoginUseCase _loginUseCase;
 
   LoginViewModel(this._loginUseCase);
 
@@ -22,6 +25,7 @@ class LoginViewModel
   void dispose() {
     _userNameStreamController.close();
     _passwordStreamController.close();
+    _isAllInputsValidStreamController.close();
   }
 
   @override
@@ -38,17 +42,23 @@ class LoginViewModel
   Sink get inputUserName => _userNameStreamController.sink;
 
   @override
+  // TODO: implement inputIsAllInputsValid
+  Sink get inputIsAllInputsValid => _isAllInputsValidStreamController.sink;
+
+  @override
   login() async {
-    (await _loginUseCase?.execute(// TODO: remove ?
+    (await _loginUseCase?.execute( // TODO: remove ?
         LoginUseCaseInput(loginObject.userName, loginObject.password)))?.fold(
-        (failure) => {
-              // Left -> Failure (message)
-              print(failure.message)
-            },
-        (data) => {
-              // Right -> Success (data)
-              print(data.customer?.name)
-            });
+            (failure) =>
+        {
+          // Left -> Failure (message)
+          print(failure.message)
+        },
+            (data) =>
+        {
+          // Right -> Success (data)
+          print(data.customer?.name)
+        });
   }
 
   @override
@@ -56,6 +66,7 @@ class LoginViewModel
     inputPassword.add(password);
     loginObject = loginObject.copyWith(
         password: password); // data class operation same as kotlin
+    _validate();
   }
 
   @override
@@ -63,26 +74,44 @@ class LoginViewModel
     inputUserName.add(userName);
     loginObject = loginObject.copyWith(
         userName: userName); // data class operation same as kotlin
+    _validate();
   }
 
   // outputs
   @override
   // TODO: implement outputIsPasswordValid
-  Stream<bool> get outputIsPasswordValid => _passwordStreamController.stream
-      .map((password) => _isPasswordValid(password));
+  Stream<bool> get outputIsPasswordValid =>
+      _passwordStreamController.stream
+          .map((password) => _isPasswordValid(password));
 
   @override
   // TODO: implement outputIsUserNameValid
-  Stream<bool> get outputIsUserNameValid => _userNameStreamController.stream
-      .map((username) => _isUserNameValid(username));
+  Stream<bool> get outputIsUserNameValid =>
+      _userNameStreamController.stream
+          .map((username) => _isUserNameValid(username));
+
+  @override
+  // TODO: implement outputIsAllInputsValid
+  Stream<bool> get outputIsAllInputsValid =>
+      _isAllInputsValidStreamController.stream.map((_) => _isAllInputsValid());
 
   // private functions
-  _isPasswordValid(String password) {
+
+  _validate() {
+    inputIsAllInputsValid.add(null);
+  }
+
+  bool _isPasswordValid(String password) {
     return password.isNotEmpty;
   }
 
-  _isUserNameValid(String username) {
+  bool _isUserNameValid(String username) {
     return username.isNotEmpty;
+  }
+
+  bool _isAllInputsValid() {
+    return _isUserNameValid(loginObject.userName) &&
+        _isPasswordValid(loginObject.password);
   }
 }
 
@@ -98,10 +127,14 @@ abstract class LoginViewModelInputs {
   Sink get inputUserName;
 
   Sink get inputPassword;
+
+  Sink get inputIsAllInputsValid;
 }
 
 abstract class LoginViewModelOutputs {
   Stream<bool> get outputIsUserNameValid;
 
   Stream<bool> get outputIsPasswordValid;
+
+  Stream<bool> get outputIsAllInputsValid;
 }
