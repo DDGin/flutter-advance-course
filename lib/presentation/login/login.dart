@@ -21,7 +21,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  LoginViewModel _viewModel = LoginViewModel(_loginUseCase);
+  // TODO: Remove "as LoginUseCase"
+  LoginViewModel _viewModel = LoginViewModel(_loginUseCase as LoginUseCase);
 
   TextEditingController _userNameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -166,3 +167,6 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
+
+// TODO: Remove it
+class _loginUseCase {}

@@ -7,12 +7,12 @@ import 'package:flutter_advance_course/presentation/common/freezed_data_classes.
 class LoginViewModel
     implements BaseViewModel, LoginViewModelInputs, LoginViewModelOutputs {
   StreamController _userNameStreamController =
-  StreamController<String>.broadcast();
+      StreamController<String>.broadcast();
   StreamController _passwordStreamController =
-  StreamController<String>.broadcast();
+      StreamController<String>.broadcast();
 
   StreamController _isAllInputsValidStreamController =
-  StreamController<void>.broadcast();
+      StreamController<void>.broadcast();
 
   var loginObject = LoginObject("", "");
 
@@ -47,18 +47,16 @@ class LoginViewModel
 
   @override
   login() async {
-    (await _loginUseCase?.execute( // TODO: remove ?
+    (await _loginUseCase?.execute(// TODO: remove ?
         LoginUseCaseInput(loginObject.userName, loginObject.password)))?.fold(
-            (failure) =>
-        {
-          // Left -> Failure (message)
-          print(failure.message)
-        },
-            (data) =>
-        {
-          // Right -> Success (data)
-          print(data.customer?.name)
-        });
+        (failure) => {
+              // Left -> Failure (message)
+              print(failure.message)
+            },
+        (data) => {
+              // Right -> Success (data)
+              print(data.customer?.name)
+            });
   }
 
   @override
@@ -80,15 +78,13 @@ class LoginViewModel
   // outputs
   @override
   // TODO: implement outputIsPasswordValid
-  Stream<bool> get outputIsPasswordValid =>
-      _passwordStreamController.stream
-          .map((password) => _isPasswordValid(password));
+  Stream<bool> get outputIsPasswordValid => _passwordStreamController.stream
+      .map((password) => _isPasswordValid(password));
 
   @override
   // TODO: implement outputIsUserNameValid
-  Stream<bool> get outputIsUserNameValid =>
-      _userNameStreamController.stream
-          .map((username) => _isUserNameValid(username));
+  Stream<bool> get outputIsUserNameValid => _userNameStreamController.stream
+      .map((username) => _isUserNameValid(username));
 
   @override
   // TODO: implement outputIsAllInputsValid
