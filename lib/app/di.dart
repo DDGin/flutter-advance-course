@@ -6,6 +6,8 @@ import 'package:flutter_advance_course/data/network/dio_factory.dart';
 import 'package:flutter_advance_course/data/network/network_info.dart';
 import 'package:flutter_advance_course/data/repository/repository_impl.dart';
 import 'package:flutter_advance_course/domain/repository/repository.dart';
+import 'package:flutter_advance_course/domain/usecase/login_usecase.dart';
+import 'package:flutter_advance_course/presentation/login/login_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,7 +34,6 @@ Future<void> initAppModule() async {
 
   final dio = await instance<DioFactory>().getDio();
   // instance<DioFactory>() LIKE DioFactory(_appPreferences);
-  // dioFactory.getDio() LIKE .getDio();
 
   instance.registerLazySingleton<AppServiceClient>(() => AppServiceClient(dio));
 
@@ -43,4 +44,11 @@ Future<void> initAppModule() async {
   // repository
   instance.registerLazySingleton<Repository>(
       () => RepositoryImpl(instance(), instance()));
+}
+
+initLoginModule() {
+  if (!GetIt.I.isRegistered<LoginUseCase>()) {
+    instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
+    instance.registerFactory<LoginViewModel>(() => LoginViewModel(instance()));
+  }
 }

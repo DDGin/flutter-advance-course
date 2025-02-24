@@ -11,6 +11,7 @@ import 'package:flutter_advance_course/presentation/resources/string_manager.dar
 import 'package:flutter_advance_course/presentation/resources/value_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../app/di.dart';
 import '../resources/route_manager.dart';
 
 class LoginView extends StatefulWidget {
@@ -22,7 +23,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   // TODO: Remove "as LoginUseCase"
-  LoginViewModel _viewModel = LoginViewModel(_loginUseCase as LoginUseCase);
+  LoginViewModel _viewModel = instance<LoginViewModel>();
 
   TextEditingController _userNameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -167,6 +168,3 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-
-// TODO: Remove it
-class _loginUseCase {}

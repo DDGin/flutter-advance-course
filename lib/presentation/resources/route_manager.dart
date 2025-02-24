@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advance_course/app/di.dart';
 import 'package:flutter_advance_course/presentation/forgot_password/forgot_password.dart';
 import 'package:flutter_advance_course/presentation/login/login.dart';
 import 'package:flutter_advance_course/presentation/main/main_view.dart';
@@ -25,6 +26,7 @@ class RouteGenerator {
       case Routes.splashRoute:
         return MaterialPageRoute(builder: (_) => SplashView());
       case Routes.loginRoute:
+        initLoginModule();
         return MaterialPageRoute(builder: (_) => LoginView());
       case Routes.registerRoute:
         return MaterialPageRoute(builder: (_) => RegisterView());
