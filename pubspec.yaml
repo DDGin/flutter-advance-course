@@ -46,6 +46,7 @@ dependencies:
   device_info_plus: ^11.2.1
   freezed_annotation: ^2.4.4
   get_it: ^8.0.3
+  lottie: ^3.3.1
 
 
 dev_dependencies:
@@ -83,7 +84,9 @@ flutter:
     - assets/images/left_arrow_ic.svg
     - assets/images/right_arrow_ic.svg
     - assets/images/solid_circle_ic.svg
-    #- assets/images/login_ic.svg
+    - assets/json/loading.json
+    - assets/json/empty.json
+    - assets/json/error.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
