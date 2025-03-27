@@ -4,7 +4,7 @@ import 'package:flutter_advance_course/data/mapper/mapper.dart';
 extension NonNullString on String? {
   String orEmpty() {
     if (this == null) {
-      return EMPTY;
+      return EMPTYSTR;
     } else {
       return this!;
     }
