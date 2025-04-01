@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_advance_course/domain/model/model.dart';
 import 'package:flutter_advance_course/presentation/base/baseviewmodel.dart';
+import 'package:flutter_advance_course/presentation/common/state_renderfer/state_renderfer_impl.dart';
 import 'package:flutter_advance_course/presentation/resources/asset_manager.dart';
 import 'package:flutter_advance_course/presentation/resources/string_manager.dart';
 
@@ -85,6 +86,19 @@ class OnBoardingViewModel
   _postDataToView() {
     inputSliderViewObject.add(
         SlideViewObject(_list[_currentIndex], _list.length, _currentIndex));
+  }
+
+  @override
+  // TODO: implement inputState
+  Sink get inputState => throw UnimplementedError();
+
+  @override
+  // TODO: implement outputState
+  Stream<FlowState> get outputState => throw UnimplementedError();
+
+  @override
+  void resetFlowState() {
+    // TODO: implement resetFlowState
   }
 }
 

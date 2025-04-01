@@ -1,16 +1,18 @@
 import 'dart:async';
 
+import 'package:flutter_advance_course/data/mapper/mapper.dart';
 import 'package:flutter_advance_course/domain/usecase/login_usecase.dart';
 import 'package:flutter_advance_course/presentation/base/baseviewmodel.dart';
 import 'package:flutter_advance_course/presentation/common/freezed_data_classes.dart';
+import 'package:flutter_advance_course/presentation/common/state_renderfer/state_renderfer.dart';
+import 'package:flutter_advance_course/presentation/common/state_renderfer/state_renderfer_impl.dart';
 
-class LoginViewModel
-    implements BaseViewModel, LoginViewModelInputs, LoginViewModelOutputs {
+class LoginViewModel extends BaseViewModel
+    with LoginViewModelInputs, LoginViewModelOutputs {
   StreamController _userNameStreamController =
       StreamController<String>.broadcast();
   StreamController _passwordStreamController =
       StreamController<String>.broadcast();
-
   StreamController _isAllInputsValidStreamController =
       StreamController<void>.broadcast();
 
@@ -19,6 +21,12 @@ class LoginViewModel
   LoginUseCase _loginUseCase;
 
   LoginViewModel(this._loginUseCase);
+
+  @override
+  void start() {
+    // view tells state renderer, please show the content of the screen
+    inputState.add(ContentState());
+  }
 
   // inputs
   @override
@@ -29,34 +37,33 @@ class LoginViewModel
   }
 
   @override
-  void start() {
-    // TODO: implement start
-  }
-
-  @override
-  // TODO: implement inputPassword
   Sink get inputPassword => _passwordStreamController.sink;
 
   @override
-  // TODO: implement inputUserName
   Sink get inputUserName => _userNameStreamController.sink;
 
   @override
-  // TODO: implement inputIsAllInputsValid
   Sink get inputIsAllInputsValid => _isAllInputsValidStreamController.sink;
 
   @override
   login() async {
-    (await _loginUseCase?.execute(// TODO: remove ?
-        LoginUseCaseInput(loginObject.userName, loginObject.password)))?.fold(
-        (failure) => {
-              // Left -> Failure (message)
-              print(failure.message)
-            },
-        (data) => {
-              // Right -> Success (data)
-              print(data.customer?.name)
-            });
+    inputState.add(
+        LoadingState(StateRendererType.FULL_SCREEN_LOADING_PAGE, EMPTYSTR));
+    (await _loginUseCase.execute(
+            LoginUseCaseInput(loginObject.userName, loginObject.password)))
+        .fold(
+            (failure) => {
+                  // Left -> Failure (message)
+                  inputState.add(ErrorState(
+                      StateRendererType.FULL_SCREEN_ERROR_PAGE,
+                      failure.message))
+                },
+            (data) => {
+                  // Right -> Success (data)
+                  inputState.add(ContentState())
+
+                  // navigate to main screen after login
+                });
   }
 
   @override
@@ -77,17 +84,14 @@ class LoginViewModel
 
   // outputs
   @override
-  // TODO: implement outputIsPasswordValid
   Stream<bool> get outputIsPasswordValid => _passwordStreamController.stream
       .map((password) => _isPasswordValid(password));
 
   @override
-  // TODO: implement outputIsUserNameValid
   Stream<bool> get outputIsUserNameValid => _userNameStreamController.stream
       .map((username) => _isUserNameValid(username));
 
   @override
-  // TODO: implement outputIsAllInputsValid
   Stream<bool> get outputIsAllInputsValid =>
       _isAllInputsValidStreamController.stream.map((_) => _isAllInputsValid());
 
@@ -111,7 +115,7 @@ class LoginViewModel
   }
 }
 
-abstract class LoginViewModelInputs {
+abstract mixin class LoginViewModelInputs {
   // three functions
   setUserName(String userName);
 
@@ -127,7 +131,7 @@ abstract class LoginViewModelInputs {
   Sink get inputIsAllInputsValid;
 }
 
-abstract class LoginViewModelOutputs {
+abstract mixin class LoginViewModelOutputs {
   Stream<bool> get outputIsUserNameValid;
 
   Stream<bool> get outputIsPasswordValid;
