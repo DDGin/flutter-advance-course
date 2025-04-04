@@ -5,4 +5,6 @@ import 'package:flutter_advance_course/domain/model/model.dart';
 
 abstract class Repository {
   Future<Either<Failure, Authentication>> login(LoginRequest loginRequest);
+
+  Future<Either<Failure, String>> forgotPassword(String email);
 }

@@ -14,6 +14,7 @@ enum StateRendererType {
   // POPUP STATES
   POPUP_LOADING_STATE,
   POPUP_ERROR_STATE,
+  POPUP_SUCCESS,
 
   // FULL SCREEN STATE
   FULL_SCREEN_LOADING_PAGE,
@@ -57,6 +58,13 @@ class StateRenderer extends StatelessWidget {
       case StateRendererType.POPUP_ERROR_STATE:
         return _getPopUpDiaLog(context, [
           _getAnimatedImage(JsonAssets.errorAni),
+          _getMessage(message),
+          _getRetryButton(AppStrings.ok, context)
+        ]);
+      case StateRendererType.POPUP_SUCCESS:
+        return _getPopUpDiaLog(context, [
+          _getAnimatedImage(JsonAssets.successAni),
+          _getMessage(title),
           _getMessage(message),
           _getRetryButton(AppStrings.ok, context)
         ]);
@@ -151,7 +159,8 @@ class StateRenderer extends StatelessWidget {
                   // Call the API function again to retry
                   retryActionFunction?.call();
                 } else {
-                  Navigator.of(context).pop();
+                  // TODO: Navigator error, try to remove comment
+                  //Navigator.of(context).pop();
                   resetFlowState();
                 }
               },

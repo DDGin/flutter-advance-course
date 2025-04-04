@@ -30,6 +30,31 @@ class RepositoryImpl implements Repository {
               response.message ?? ResponseMessage.DEFAULT));
         }
       } catch (error) {
+        print("$error RepositoryImpl:33");
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> forgotPassword(String email) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _remoteDataSource.forgotPassword(email);
+
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          // if success, return right
+          return Right(response.toDomain());
+        } else {
+          return Left(
+            Failure(response.status ?? ApiInternalStatus.FAILURE,
+                response.message ?? ResponseMessage.DEFAULT),
+          );
+        }
+      } catch (error) {
+        print("$error RepositoryImpl:58");
         return Left(ErrorHandler.handle(error).failure);
       }
     } else {

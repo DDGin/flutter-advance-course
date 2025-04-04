@@ -2,6 +2,7 @@
 import 'package:flutter_advance_course/app/extenstion.dart';
 import 'package:flutter_advance_course/data/responses/responses.dart';
 import 'package:flutter_advance_course/domain/model/model.dart';
+import 'package:flutter_advance_course/domain/usecase/forgot_password_usecase.dart';
 
 const EMPTYSTR = "";
 const ZERO = 0;
@@ -26,5 +27,11 @@ extension AuthenticationResponseMapper on AuthenticationResponse? {
   Authentication toDomain() {
     return Authentication(
         this?.customer?.toDomain(), this?.contact?.toDomain());
+  }
+}
+
+extension ForgotPasswordResponseMapper on ForgotPasswordResponse? {
+  String toDomain() {
+    return this?.support?.orEmpty() ?? EMPTYSTR;
   }
 }

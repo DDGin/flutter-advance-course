@@ -65,6 +65,19 @@ class EmptyState extends FlowState {
       StateRendererType.EMPTY_SCREEN_STATE;
 }
 
+// Success
+class SuccessState extends FlowState {
+  String message;
+
+  SuccessState(this.message);
+
+  @override
+  String getMessage() => message;
+
+  @override
+  StateRendererType getStateRendererType() => StateRendererType.POPUP_SUCCESS;
+}
+
 extension FlowStateExtension on FlowState {
   Widget getScreenWidget(
       {required BuildContext context,
@@ -87,6 +100,24 @@ extension FlowStateExtension on FlowState {
               message: getMessage(),
               retryActionFunction: retryActionFunction,
               resetFlowState: resetFlowState);
+        }
+      case SuccessState:
+        if (getStateRendererType() == StateRendererType.POPUP_LOADING_STATE) {
+          // showing popup dialog
+          showPopUp(
+              context: context,
+              stateRendererType: getStateRendererType(),
+              message: getMessage(),
+              resetFlowState: resetFlowState);
+          // return the content ui of the content
+        } else {
+          return StateRenderer(
+            stateRendererType: getStateRendererType(),
+            retryActionFunction: retryActionFunction,
+            resetFlowState: resetFlowState,
+            message: getMessage(),
+            title: AppStrings.success,
+          );
         }
 
       case ErrorState:

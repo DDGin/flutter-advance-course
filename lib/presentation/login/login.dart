@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_advance_course/app/app_prefs.dart';
 import 'package:flutter_advance_course/data/data_source/remote_data_source.dart';
 import 'package:flutter_advance_course/data/network/network_info.dart';
 import 'package:flutter_advance_course/data/repository/repository_impl.dart';
@@ -24,6 +26,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   LoginViewModel _viewModel = instance<LoginViewModel>();
+  AppPreferences _appPreferences = instance<AppPreferences>();
 
   TextEditingController _userNameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -36,6 +39,15 @@ class _LoginViewState extends State<LoginView> {
         .addListener(() => _viewModel.setUserName(_userNameController.text));
     _passwordController
         .addListener(() => _viewModel.setPassword(_passwordController.text));
+    _viewModel.isUserLoggedInSuccessfullyStreamController.stream
+        .listen((isUserLoggedIn) {
+      // navigate to main screen
+      // https://stackoverflow.com/questions/56273737/schedulerbinding-vs-widgetsbinding
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        _appPreferences.setUserLoggedIn();
+        Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+      });
+    });
   }
 
   @override
@@ -150,8 +162,7 @@ class _LoginViewState extends State<LoginView> {
                   children: [
                     TextButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(
-                              context, Routes.registerRoute);
+                          Navigator.pushNamed(context, Routes.registerRoute);
                         },
                         child: Text(
                           AppStrings.registerText,
@@ -160,7 +171,7 @@ class _LoginViewState extends State<LoginView> {
                         )),
                     TextButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(
+                          Navigator.pushNamed(
                               context, Routes.forgotPasswordRoute);
                         },
                         child: Text(

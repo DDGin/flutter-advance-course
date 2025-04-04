@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_advance_course/app/app_prefs.dart';
+import 'package:flutter_advance_course/app/di.dart';
 import 'package:flutter_advance_course/domain/model/model.dart';
 import 'package:flutter_advance_course/presentation/onboarding/onboarding_viewmodel.dart';
 import 'package:flutter_advance_course/presentation/resources/asset_manager.dart';
@@ -19,16 +21,16 @@ class OnBoardingView extends StatefulWidget {
 
 class _OnBoardingViewState extends State<OnBoardingView> {
   PageController _pageController = PageController(initialPage: 0);
-
   OnBoardingViewModel _viewModel = OnBoardingViewModel();
+  AppPreferences _appPreferences = instance<AppPreferences>();
 
   _bind() {
+    _appPreferences.setOnBoardingScreenViewed();
     _viewModel.start();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     _bind();
     super.initState();
   }
@@ -176,7 +178,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
   @override
   void dispose() {
-    // TODO: viewmodel.dispose();
     _viewModel.dispose();
     super.dispose();
   }

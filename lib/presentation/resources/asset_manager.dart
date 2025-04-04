@@ -17,4 +17,5 @@ class JsonAssets {
   static const String loadingAni = "$JSON_PATH/loading.json";
   static const String emptyAni = "$JSON_PATH/empty.json";
   static const String errorAni = "$JSON_PATH/error.json";
+  static const String successAni = "$JSON_PATH/success.json";
 }
