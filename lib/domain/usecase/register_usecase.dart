@@ -6,11 +6,11 @@ import 'package:flutter_advance_course/domain/model/model.dart';
 import 'package:flutter_advance_course/domain/repository/repository.dart';
 import 'package:flutter_advance_course/domain/usecase/base_usecase.dart';
 
-class RegisterUsecase
+class RegisterUseCase
     implements BaseUseCase<RegisterUseCaseInput, Authentication> {
   Repository _repository;
 
-  RegisterUsecase(this._repository);
+  RegisterUseCase(this._repository);
 
   @override
   Future<Either<Failure, Authentication>> execute(

@@ -3,8 +3,11 @@ import 'dart:io';
 
 import 'package:flutter_advance_course/app/function.dart';
 import 'package:flutter_advance_course/data/mapper/mapper.dart';
+import 'package:flutter_advance_course/domain/usecase/register_usecase.dart';
 import 'package:flutter_advance_course/presentation/base/baseviewmodel.dart';
 import 'package:flutter_advance_course/presentation/common/freezed_data_classes.dart';
+import 'package:flutter_advance_course/presentation/common/state_renderfer/state_renderfer.dart';
+import 'package:flutter_advance_course/presentation/common/state_renderfer/state_renderfer_impl.dart';
 import 'package:flutter_advance_course/presentation/resources/string_manager.dart';
 
 class RegisterViewModel extends BaseViewModel
@@ -22,12 +25,36 @@ class RegisterViewModel extends BaseViewModel
   StreamController _isAllInputValidStreamController =
       StreamController<void>.broadcast();
 
+  RegisterUseCase _registerUseCase;
+
+  RegisterViewModel(this._registerUseCase);
+
   var registerObject = RegisterObject(
       EMPTYSTR, EMPTYSTR, EMPTYSTR, EMPTYSTR, EMPTYSTR, EMPTYSTR);
 
   @override
   void start() {
-    // TODO: implement start
+    // view tells state renderer, please show the content of the screen
+    inputState.add(ContentState());
+  }
+
+  @override
+  register() async {
+    inputState.add(
+        LoadingState(StateRendererType.FULL_SCREEN_LOADING_PAGE, EMPTYSTR));
+    (await _registerUseCase.execute(RegisterUseCaseInput(
+            registerObject.countryMobileCode,
+            registerObject.userName,
+            registerObject.email,
+            registerObject.password,
+            registerObject.mobileNumber,
+            registerObject.profilePicture)))
+        .fold(
+            (failure) => {
+                  inputState.add(
+                      ErrorState(StateRendererType.POPUP_ERROR_STATE, EMPTYSTR))
+                },
+            (data) => {inputState.add(ContentState())});
   }
 
   @override
@@ -121,6 +148,7 @@ class RegisterViewModel extends BaseViewModel
       // reset email value on register view object
       registerObject = registerObject.copyWith(email: EMPTYSTR);
     }
+    _validate();
   }
 
   @override
@@ -132,6 +160,7 @@ class RegisterViewModel extends BaseViewModel
       // reset mobileNumber value on register view object
       registerObject = registerObject.copyWith(mobileNumber: EMPTYSTR);
     }
+    _validate();
   }
 
   @override
@@ -143,6 +172,7 @@ class RegisterViewModel extends BaseViewModel
       // reset countryCode value on register view object
       registerObject = registerObject.copyWith(countryMobileCode: EMPTYSTR);
     }
+    _validate();
   }
 
   @override
@@ -154,6 +184,7 @@ class RegisterViewModel extends BaseViewModel
       // reset password value on register view object
       registerObject = registerObject.copyWith(password: EMPTYSTR);
     }
+    _validate();
   }
 
   @override
@@ -166,6 +197,7 @@ class RegisterViewModel extends BaseViewModel
       // reset profilePicture on register view object
       registerObject = registerObject.copyWith(profilePicture: EMPTYSTR);
     }
+    _validate();
   }
 
   @override
@@ -177,12 +209,7 @@ class RegisterViewModel extends BaseViewModel
       // reset username value on register view object
       registerObject = registerObject.copyWith(userName: EMPTYSTR);
     }
-  }
-
-  @override
-  register() {
-    // TODO: implement register
-    throw UnimplementedError();
+    _validate();
   }
 
   // ----- private methods -----
@@ -198,7 +225,18 @@ class RegisterViewModel extends BaseViewModel
     return password.length >= 8;
   }
 
-  _validateAllInputs() {}
+  bool _validateAllInputs() {
+    return registerObject.profilePicture.isNotEmpty &&
+        registerObject.userName.isNotEmpty &&
+        registerObject.password.isNotEmpty &&
+        registerObject.email.isNotEmpty &&
+        registerObject.mobileNumber.isNotEmpty &&
+        registerObject.countryMobileCode.isNotEmpty;
+  }
+
+  _validate() {
+    inputIsAllInputsValid.add(null);
+  }
 }
 
 abstract mixin class RegisterViewModelInput {
