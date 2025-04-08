@@ -19,11 +19,9 @@ class RepositoryImpl implements Repository {
       LoginRequest loginRequest) async {
     if (await _networkInfo.isConnected) {
       try {
-        // it safe to call API
         final response = await _remoteDataSource.login(loginRequest);
 
         if (response.status == ApiInternalStatus.SUCCESS) {
-          // if success, return right
           return Right(response.toDomain());
         } else {
           return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
@@ -55,6 +53,28 @@ class RepositoryImpl implements Repository {
         }
       } catch (error) {
         print("$error RepositoryImpl:58");
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Authentication>> register(
+      RegisterRequest registerRequest) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _remoteDataSource.register(registerRequest);
+
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          return Right(response.toDomain());
+        } else {
+          return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        print("$error RepositoryImpl:80");
         return Left(ErrorHandler.handle(error).failure);
       }
     } else {

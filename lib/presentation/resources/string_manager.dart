@@ -34,4 +34,12 @@ class AppStrings {
   static const String resetPassword = "Reset Password";
 
   static const String success = "Success";
+
+  static const String errorUserName = "Invalid username";
+
+  static const String errorEmail = "Invalid email";
+
+  static const String errorMobileNumber = "Invalid mobile number";
+
+  static const String errorPassword = "Invalid password";
 }
