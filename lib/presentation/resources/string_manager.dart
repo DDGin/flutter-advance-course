@@ -17,8 +17,11 @@ class AppStrings {
   static const String skip = "Skip";
   static const String username = "Username";
   static const String usernameError = "Username is wrong!";
+  static const String mobileNumber = "Mobile Number";
+  static const String mobileNumberError = "Mobile Number is wrong!";
   static const String password = "Password";
   static const String passwordError = "Wrong password!";
+  static const String profilePicture = "Profile Picture";
   static const String login = "Login";
   static const String forgetPassword = "Forget password";
   static const String registerText = "Not a member ? Sign up";
@@ -42,4 +45,7 @@ class AppStrings {
   static const String errorMobileNumber = "Invalid mobile number";
 
   static const String errorPassword = "Invalid password";
+
+  static const String photoGallery = "Photo form gallery";
+  static const String photoCamera = "Photo form camera";
 }

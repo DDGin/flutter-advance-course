@@ -59,7 +59,6 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _userNameStreamController.close();
     _emailStreamController.close();
     _passwordStreamController.close();
@@ -71,27 +70,21 @@ class RegisterViewModel extends BaseViewModel
 
   // ----- input -----
   @override
-  // TODO: implement inputEmail
   Sink get inputEmail => _emailStreamController.sink;
 
   @override
-  // TODO: implement inputMobileNumber
   Sink get inputMobileNumber => throw _mobileNumberStreamController.sink;
 
   @override
-  // TODO: implement inputPassword
   Sink get inputPassword => _passwordStreamController.sink;
 
   @override
-  // TODO: implement inputProfilePicture
   Sink get inputProfilePicture => _profilePictureStreamController.sink;
 
   @override
-  // TODO: implement inputUserName
   Sink get inputUserName => _userNameStreamController.sink;
 
   @override
-  // TODO: implement inputIsAllInputValid
   Sink get inputIsAllInputsValid => _isAllInputValidStreamController.sink;
 
   // ----- output -----
@@ -130,11 +123,10 @@ class RegisterViewModel extends BaseViewModel
       (isPasswordValid) => isPasswordValid ? null : AppStrings.errorPassword);
 
   @override
-  Stream<File> get outputProfilePicture =>
+  Stream<File?> get outputProfilePicture =>
       _profilePictureStreamController.stream.map((file) => file);
 
   @override
-  // TODO: implement outputIsAllInputsValid
   Stream<bool> get outputIsAllInputsValid =>
       _isAllInputValidStreamController.stream.map((_) => _validateAllInputs());
 
