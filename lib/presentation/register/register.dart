@@ -193,7 +193,7 @@ class _RegisterViewState extends State<RegisterView> {
                   child: GestureDetector(
                     child: _getMediaWidget(),
                     onTap: () {
-                      /*_showPicker(context)*/
+                      _showPicker(context);
                     },
                   ),
                 ),
@@ -218,7 +218,7 @@ class _RegisterViewState extends State<RegisterView> {
                                       _viewModel.register();
                                     }
                                   : null,
-                              child: Text(AppStrings.login)),
+                              child: Text(AppStrings.register)),
                         );
                       })),
               Padding(
@@ -226,30 +226,14 @@ class _RegisterViewState extends State<RegisterView> {
                     top: AppPadding.p8,
                     left: AppPadding.p28,
                     right: AppPadding.p28),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.registerRoute);
-                        },
-                        child: Text(
-                          AppStrings.registerText,
-                          style: Theme.of(context).textTheme.titleMedium,
-                          textAlign: TextAlign.end,
-                        )),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, Routes.forgotPasswordRoute);
-                        },
-                        child: Text(
-                          AppStrings.forgetPassword,
-                          style: Theme.of(context).textTheme.titleMedium,
-                          textAlign: TextAlign.end,
-                        )),
-                  ],
-                ),
+                child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      AppStrings.hasAccount,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    )),
               )
             ],
           )),

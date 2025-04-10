@@ -23,8 +23,10 @@ class AppStrings {
   static const String passwordError = "Wrong password!";
   static const String profilePicture = "Profile Picture";
   static const String login = "Login";
+  static const String register = "Register";
   static const String forgetPassword = "Forget password";
   static const String registerText = "Not a member ? Sign up";
+  static const String hasAccount = "Already have an account? Login";
 
   static const String loading = "Loading ...";
 
