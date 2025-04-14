@@ -5,7 +5,7 @@ import 'package:flutter_advance_course/presentation/resources/value_manager.dart
 
 import 'search_page.dart';
 import 'setting_page.dart';
-import 'home_page.dart';
+import 'home/home_page.dart';
 import 'notifications_page.dart';
 
 class MainView extends StatefulWidget {
