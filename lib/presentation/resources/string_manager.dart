@@ -50,4 +50,9 @@ class AppStrings {
 
   static const String photoGallery = "Photo form gallery";
   static const String photoCamera = "Photo form camera";
+
+  static const String home = "Home";
+  static const String search = "Search";
+  static const String notifications = "Notifications";
+  static const String setting = "Setting";
 }

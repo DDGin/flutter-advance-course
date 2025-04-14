@@ -13,17 +13,19 @@ import 'package:flutter_advance_course/presentation/resources/string_manager.dar
 class RegisterViewModel extends BaseViewModel
     with RegisterViewModelInput, RegisterViewModelOutput {
   StreamController _userNameStreamController =
-      StreamController<String>.broadcast();
+      StreamController<String?>.broadcast();
   StreamController _emailStreamController =
-      StreamController<String>.broadcast();
+      StreamController<String?>.broadcast();
   StreamController _passwordStreamController =
-      StreamController<String>.broadcast();
+      StreamController<String?>.broadcast();
   StreamController _mobileNumberStreamController =
-      StreamController<String>.broadcast();
+      StreamController<String?>.broadcast();
   StreamController _profilePictureStreamController =
-      StreamController<File>.broadcast();
+      StreamController<File?>.broadcast();
   StreamController _isAllInputValidStreamController =
       StreamController<void>.broadcast();
+  StreamController isUserLoggedInSuccessfullyStreamController =
+      StreamController<bool>();
 
   RegisterUseCase _registerUseCase;
 
@@ -53,8 +55,10 @@ class RegisterViewModel extends BaseViewModel
             (failure) => {
                   inputState.add(
                       ErrorState(StateRendererType.POPUP_ERROR_STATE, EMPTYSTR))
-                },
-            (data) => {inputState.add(ContentState())});
+                }, (data) {
+      inputState.add(ContentState());
+      isUserLoggedInSuccessfullyStreamController.add(true);
+    });
   }
 
   @override
@@ -65,6 +69,8 @@ class RegisterViewModel extends BaseViewModel
     _mobileNumberStreamController.close();
     _profilePictureStreamController.close();
     _isAllInputValidStreamController.close();
+    isUserLoggedInSuccessfullyStreamController.close();
+
     super.dispose();
   }
 
@@ -73,7 +79,7 @@ class RegisterViewModel extends BaseViewModel
   Sink get inputEmail => _emailStreamController.sink;
 
   @override
-  Sink get inputMobileNumber => throw _mobileNumberStreamController.sink;
+  Sink get inputMobileNumber => _mobileNumberStreamController.sink;
 
   @override
   Sink get inputPassword => _passwordStreamController.sink;
@@ -133,6 +139,7 @@ class RegisterViewModel extends BaseViewModel
   // ----- public methods -----
   @override
   setEmail(String email) {
+    inputEmail.add(email);
     if (isEmailValid(email)) {
       // update register view object with email value
       registerObject = registerObject.copyWith(email: email);
@@ -145,6 +152,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   setMobileNumber(String mobileNumber) {
+    inputMobileNumber.add(mobileNumber);
     if (_isMobileNumberValid(mobileNumber)) {
       // update register view object with mobileNumber value
       registerObject = registerObject.copyWith(mobileNumber: mobileNumber);
@@ -169,6 +177,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   setPassword(String password) {
+    inputPassword.add(password);
     if (_isPasswordValid(password)) {
       // update register view object with password value
       registerObject = registerObject.copyWith(password: password);
@@ -181,6 +190,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   setProfilePicture(File profilePicture) {
+    inputProfilePicture.add(profilePicture);
     if (profilePicture.path.isNotEmpty) {
       // update register view object with profilePicture
       registerObject =
@@ -194,6 +204,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   setUserName(String userName) {
+    inputUserName.add(userName);
     if (_isUserNameValid(userName)) {
       // update register view object with username value
       registerObject = registerObject.copyWith(userName: userName);
@@ -206,11 +217,11 @@ class RegisterViewModel extends BaseViewModel
 
   // ----- private methods -----
   bool _isUserNameValid(String userName) {
-    return userName.length >= 8 && userName.length <= 32;
+    return userName.length >= 3;
   }
 
   bool _isMobileNumberValid(String mobileNumber) {
-    return mobileNumber.length >= 9;
+    return mobileNumber.length >= 10;
   }
 
   bool _isPasswordValid(String password) {

@@ -43,7 +43,8 @@ class _LoginViewState extends State<LoginView> {
         .listen((isUserLoggedIn) {
       // navigate to main screen
       // https://stackoverflow.com/questions/56273737/schedulerbinding-vs-widgetsbinding
-      SchedulerBinding.instance.addPostFrameCallback((_) {
+      // NOT: remove "?"
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
         _appPreferences.setUserLoggedIn();
         Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
       });

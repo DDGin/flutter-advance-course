@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_advance_course/data/mapper/mapper.dart';
 import 'package:flutter_advance_course/presentation/register/register_viewmodel.dart';
 import 'package:flutter_advance_course/presentation/resources/color_manager.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_advance_course/presentation/resources/value_manager.dart
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../app/app_prefs.dart';
 import '../../app/di.dart';
 import '../common/state_renderfer/state_renderfer_impl.dart';
 import '../resources/asset_manager.dart';
@@ -24,6 +26,8 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   RegisterViewModel _viewModel = instance<RegisterViewModel>();
+  AppPreferences _appPreferences = instance<AppPreferences>();
+
   ImagePicker picker = instance<ImagePicker>();
   final _formKey = GlobalKey<FormState>();
 
@@ -43,11 +47,20 @@ class _RegisterViewState extends State<RegisterView> {
     _userNameController
         .addListener(() => _viewModel.setUserName(_userNameController.text));
     _passwordController
-        .addListener(() => _viewModel.setUserName(_passwordController.text));
+        .addListener(() => _viewModel.setPassword(_passwordController.text));
     _emailController
-        .addListener(() => _viewModel.setUserName(_emailController.text));
+        .addListener(() => _viewModel.setEmail(_emailController.text));
     _mobileNumberController.addListener(
-        () => _viewModel.setUserName(_mobileNumberController.text));
+        () => _viewModel.setMobileNumber(_mobileNumberController.text));
+    _viewModel.isUserLoggedInSuccessfullyStreamController.stream
+        .listen((isUserLoggedIn) {
+      // navigate to main screen
+      // https://stackoverflow.com/questions/56273737/schedulerbinding-vs-widgetsbinding
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
+        _appPreferences.setUserLoggedIn();
+        Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
+      });
+    });
   }
 
   @override
@@ -82,7 +95,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   Widget _getContentWidget() {
     return Container(
-      padding: EdgeInsets.only(top: AppPadding.p60),
+      padding: EdgeInsets.only(top: AppPadding.p30),
       color: ColorManager.white,
       child: SingleChildScrollView(
         child: Form(
@@ -107,12 +120,13 @@ class _RegisterViewState extends State<RegisterView> {
                           ));
                     }),
               ),
+              SizedBox(height: AppSize.s12),
               Center(
                 child: Padding(
                   padding: EdgeInsets.only(
-                      left: AppPadding.p28,
-                      right: AppPadding.p28,
-                      bottom: AppPadding.p28),
+                    left: AppPadding.p28,
+                    right: AppPadding.p28,
+                  ),
                   child: Row(
                     children: [
                       Expanded(
@@ -124,6 +138,7 @@ class _RegisterViewState extends State<RegisterView> {
                                   .setCountryCode(country.dialCode ?? EMPTYSTR);
                             },
                             initialSelection: "+33",
+                            hideMainText: true,
                             showCountryOnly: true,
                             showOnlyCountryWhenClosed: true,
                             favorite: ["+966", "+02", "+39"],
@@ -147,7 +162,7 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                 ),
               ),
-              SizedBox(height: AppSize.s28),
+              SizedBox(height: AppSize.s12),
               Padding(
                 padding: EdgeInsets.only(
                     left: AppPadding.p28, right: AppPadding.p28),
@@ -164,7 +179,7 @@ class _RegisterViewState extends State<RegisterView> {
                           ));
                     }),
               ),
-              SizedBox(height: AppSize.s28),
+              SizedBox(height: AppSize.s12),
               Padding(
                 padding: EdgeInsets.only(
                     left: AppPadding.p28, right: AppPadding.p28),
@@ -183,11 +198,12 @@ class _RegisterViewState extends State<RegisterView> {
                       );
                     }),
               ),
-              SizedBox(height: AppSize.s28),
+              SizedBox(height: AppSize.s12),
               Padding(
                 padding: EdgeInsets.only(
                     left: AppPadding.p28, right: AppPadding.p28),
                 child: Container(
+                  height: AppSize.s40,
                   decoration: BoxDecoration(
                       border: Border.all(color: ColorManager.lightGrey)),
                   child: GestureDetector(
@@ -198,7 +214,7 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                 ),
               ),
-              SizedBox(height: AppSize.s28),
+              SizedBox(height: AppSize.s24),
               Padding(
                   padding: EdgeInsets.only(
                       left: AppPadding.p28, right: AppPadding.p28),
@@ -285,6 +301,15 @@ class _RegisterViewState extends State<RegisterView> {
                 title: Text(AppStrings.photoCamera),
                 onTap: () {
                   _imageFormCamera();
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                trailing: Icon(Icons.arrow_forward),
+                leading: Icon(Icons.photo_library_outlined),
+                title: Text(AppStrings.photoGallery),
+                onTap: () {
+                  _imageFormGallery();
                   Navigator.of(context).pop();
                 },
               )
