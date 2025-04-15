@@ -8,7 +8,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../domain/usecase/home_usecase.dart';
 
-class HomeViewModel extends BaseViewModel {
+class HomeViewModel extends BaseViewModel
+    with HomeViewModelInputs, HomeViewModelOutputs {
   HomeUseCase _homeUseCase;
 
   StreamController _servicesStreamController = BehaviorSubject<List<Service>>();
@@ -29,4 +30,43 @@ class HomeViewModel extends BaseViewModel {
     _storesStreamController.close();
     super.dispose();
   }
+
+  // ------ input ------
+  @override
+  Sink get inputBanners => _bannersStreamController.sink;
+
+  @override
+  Sink get inputServices => _servicesStreamController.sink;
+
+  @override
+  Sink get inputStores => _storesStreamController.sink;
+
+  // ------ output ------
+  @override
+  Stream<List<BannerAD>> get outputBanners =>
+      _bannersStreamController.stream.map((banner) => banner);
+
+  @override
+  Stream<List<Service>> get outputServices =>
+      _servicesStreamController.stream.map((service) => service);
+
+  @override
+  Stream<List<Store>> get outputStores =>
+      _storesStreamController.stream.map((store) => store);
+}
+
+abstract mixin class HomeViewModelInputs {
+  Sink get inputServices;
+
+  Sink get inputStores;
+
+  Sink get inputBanners;
+}
+
+abstract mixin class HomeViewModelOutputs {
+  Stream<List<Service>> get outputServices;
+
+  Stream<List<Store>> get outputStores;
+
+  Stream<List<BannerAD>> get outputBanners;
 }
