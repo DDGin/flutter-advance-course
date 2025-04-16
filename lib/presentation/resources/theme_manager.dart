@@ -50,6 +50,12 @@ ThemeData getApplicationTheme() {
           // headline1
           headlineLarge: getSemiBoldStyle(
               color: ColorManager.darkGrey, fontSize: FontSize.s16),
+          // headline2
+          headlineMedium: getRegularStyle(
+              color: ColorManager.white, fontSize: FontSize.s16),
+          // headline3
+          headlineSmall:
+              getBoldStyle(color: ColorManager.primary, fontSize: FontSize.s16),
           // subtitle1
           titleLarge: getMediumStyle(
               color: ColorManager.lightGrey, fontSize: FontSize.s14),

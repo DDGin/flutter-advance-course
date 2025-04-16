@@ -12,7 +12,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(AppStrings.setting),
+      child: Text(AppStrings.settings),
     );
   }
 }

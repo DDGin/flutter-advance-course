@@ -26,7 +26,7 @@ class _MainViewState extends State<MainView> {
     AppStrings.home,
     AppStrings.search,
     AppStrings.notifications,
-    AppStrings.setting
+    AppStrings.settings
   ];
 
   var _title = AppStrings.home;
@@ -56,7 +56,7 @@ class _MainViewState extends State<MainView> {
                 icon: Icon(Icons.notifications),
                 label: AppStrings.notifications),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: AppStrings.setting)
+                icon: Icon(Icons.settings), label: AppStrings.settings)
           ],
           selectedItemColor: ColorManager.primary,
           unselectedItemColor: ColorManager.grey,
