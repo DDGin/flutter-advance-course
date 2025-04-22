@@ -152,7 +152,7 @@ class HomeDataResponse {
 
 @JsonSerializable()
 class HomeResponse extends BaseResponse {
-  @JsonKey(name: "services")
+  @JsonKey(name: "data")
   HomeDataResponse? data;
 
   HomeResponse(this.data);

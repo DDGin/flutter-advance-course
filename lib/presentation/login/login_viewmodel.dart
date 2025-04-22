@@ -17,7 +17,7 @@ class LoginViewModel extends BaseViewModel
       StreamController<void>.broadcast();
 
   StreamController isUserLoggedInSuccessfullyStreamController =
-      StreamController<bool>();
+      StreamController<String>();
 
   var loginObject = LoginObject("", "");
 
@@ -62,10 +62,19 @@ class LoginViewModel extends BaseViewModel
                       StateRendererType.POPUP_ERROR_STATE, failure.message))
                 }, (data) {
       // Right -> Success (data)
-      inputState.add(ContentState());
+      // TODO: Bug: 19/4 Get blank screen when navigate from Login -> HomeView
+      // TODO: Error: Bad state: Cannot add new events after calling close
+      // TODO: Fix: 21/4 By remove inputState.add(ContentState) in function login in login_viewmodel
+      // TODO: Why:
+      // inputState.add(ContentState()) => refresh state
+      // refresh state (login view) + build home view
+      // try to build home view while login view is refreshing => error
+      // Is this right?
+
+      // inputState.add(ContentState());
 
       // navigate to main screen after login
-      isUserLoggedInSuccessfullyStreamController.add(true);
+      isUserLoggedInSuccessfullyStreamController.add("abc");
     });
   }
 

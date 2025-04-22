@@ -147,9 +147,9 @@ Map<String, dynamic> _$HomeDataResponseToJson(HomeDataResponse instance) =>
     };
 
 HomeResponse _$HomeResponseFromJson(Map<String, dynamic> json) => HomeResponse(
-      json['services'] == null
+      json['data'] == null
           ? null
-          : HomeDataResponse.fromJson(json['services'] as Map<String, dynamic>),
+          : HomeDataResponse.fromJson(json['data'] as Map<String, dynamic>),
     )
       ..status = (json['status'] as num?)?.toInt()
       ..message = json['message'] as String?;
@@ -158,5 +158,5 @@ Map<String, dynamic> _$HomeResponseToJson(HomeResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,
-      'services': instance.data,
+      'data': instance.data,
     };

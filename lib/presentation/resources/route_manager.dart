@@ -18,6 +18,7 @@ class Routes {
   static const String forgotPasswordRoute = "/forgotPassword";
   static const String mainRoute = "/main";
   static const String storeDetailsRoute = "/storeDetails";
+  static const String testRoute = "/test";
 }
 
 class RouteGenerator {
@@ -41,6 +42,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => MainView());
       case Routes.storeDetailsRoute:
         return MaterialPageRoute(builder: (_) => StoreDetailsView());
+      case Routes.testRoute:
+        // TODO: Test 21/4
+        initLoginModule();
+        return MaterialPageRoute(builder: (_) => LoginView());
       default:
         return unDefinedRoute();
     }

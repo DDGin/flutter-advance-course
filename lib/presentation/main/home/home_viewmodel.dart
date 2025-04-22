@@ -10,15 +10,11 @@ import 'package:flutter_advance_course/presentation/common/state_renderfer/state
 import 'package:flutter_advance_course/presentation/common/state_renderfer/state_renderfer_impl.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../domain/usecase/home_usecase.dart';
-
 class HomeViewModel extends BaseViewModel
     with HomeViewModelInputs, HomeViewModelOutputs {
   HomeUseCase _homeUseCase;
 
-  StreamController _servicesStreamController = BehaviorSubject<List<Service>>();
-  StreamController _bannersStreamController = BehaviorSubject<List<BannerAD>>();
-  StreamController _storesStreamController = BehaviorSubject<List<Store>>();
+  BehaviorSubject<HomeData> _dataStreamController = BehaviorSubject<HomeData>();
 
   HomeViewModel(this._homeUseCase);
 
@@ -35,56 +31,31 @@ class HomeViewModel extends BaseViewModel
           StateRendererType.FULL_SCREEN_ERROR_PAGE, failure.message));
     }, (homeObject) {
       inputState.add(ContentState());
-      inputBanners.add(homeObject.data.banners);
-      inputServices.add(homeObject.data.services);
-      inputStores.add(homeObject.data.stores);
+      inputHomeData.add(HomeData(homeObject.data.services,
+          homeObject.data.banners, homeObject.data.stores));
     });
   }
 
   @override
   void dispose() {
-    _servicesStreamController.close();
-    _bannersStreamController.close();
-    _storesStreamController.close();
+    _dataStreamController.close();
     super.dispose();
   }
 
   // ------ input ------
   @override
-  Sink get inputBanners => _bannersStreamController.sink;
-
-  @override
-  Sink get inputServices => _servicesStreamController.sink;
-
-  @override
-  Sink get inputStores => _storesStreamController.sink;
+  Sink get inputHomeData => _dataStreamController.sink;
 
   // ------ output ------
   @override
-  Stream<List<BannerAD>> get outputBanners =>
-      _bannersStreamController.stream.map((banner) => banner);
-
-  @override
-  Stream<List<Service>> get outputServices =>
-      _servicesStreamController.stream.map((service) => service);
-
-  @override
-  Stream<List<Store>> get outputStores =>
-      _storesStreamController.stream.map((store) => store);
+  Stream<HomeData> get outputHomeData =>
+      _dataStreamController.stream.map((data) => data);
 }
 
 abstract mixin class HomeViewModelInputs {
-  Sink get inputServices;
-
-  Sink get inputStores;
-
-  Sink get inputBanners;
+  Sink get inputHomeData;
 }
 
 abstract mixin class HomeViewModelOutputs {
-  Stream<List<Service>> get outputServices;
-
-  Stream<List<Store>> get outputStores;
-
-  Stream<List<BannerAD>> get outputBanners;
+  Stream<HomeData> get outputHomeData;
 }

@@ -1,5 +1,6 @@
 // extension on String
 import 'package:flutter_advance_course/data/mapper/mapper.dart';
+import 'package:rxdart/rxdart.dart';
 
 extension NonNullString on String? {
   String orEmpty() {
@@ -20,4 +21,9 @@ extension NonNullInteger on int? {
       return this!;
     }
   }
+}
+
+// https://stackoverflow.com/questions/55536461/flutter-unhandled-exception-bad-state-cannot-add-new-events-after-calling-clo
+extension BehaviorSubjectExtensions<T> on BehaviorSubject<T> {
+  set safeValue(T newValue) => isClosed == false ? add(newValue) : () {};
 }

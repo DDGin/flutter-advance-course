@@ -44,6 +44,7 @@ class _LoginViewState extends State<LoginView> {
       // navigate to main screen
       // https://stackoverflow.com/questions/56273737/schedulerbinding-vs-widgetsbinding
       // NOT: remove "?"
+
       SchedulerBinding.instance?.addPostFrameCallback((_) {
         _appPreferences.setUserLoggedIn();
         Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
@@ -156,8 +157,8 @@ class _LoginViewState extends State<LoginView> {
               Padding(
                 padding: EdgeInsets.only(
                     top: AppPadding.p8,
-                    left: AppPadding.p28,
-                    right: AppPadding.p28),
+                    left: AppPadding.p18,
+                    right: AppPadding.p18),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

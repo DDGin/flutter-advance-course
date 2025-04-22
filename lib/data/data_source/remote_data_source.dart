@@ -43,6 +43,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<HomeResponse> getHome() async {
-    return await getHome();
+    return await _appServiceClient.getHome();
   }
 }

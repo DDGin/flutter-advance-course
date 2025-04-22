@@ -4,13 +4,14 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_advance_course/presentation/common/state_renderfer/state_renderfer_impl.dart';
+import 'package:rxdart/rxdart.dart';
 
 abstract class BaseViewModel extends BaseViewModelInputs
     with BaseViewModelOutputs {
   // BaseViewModel is an intermediate class of BVMInputs, BVMOutputs
   // I think so :)
   final StreamController _inputStateStreamController =
-      StreamController<FlowState>.broadcast();
+      BehaviorSubject<FlowState>();
 
   @override
   Sink get inputState => _inputStateStreamController.sink;
