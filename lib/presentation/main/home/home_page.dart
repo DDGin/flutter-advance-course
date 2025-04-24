@@ -5,6 +5,7 @@ import 'package:flutter_advance_course/domain/model/model.dart';
 import 'package:flutter_advance_course/presentation/common/state_renderfer/state_renderfer_impl.dart';
 import 'package:flutter_advance_course/presentation/main/home/home_viewmodel.dart';
 import 'package:flutter_advance_course/presentation/resources/color_manager.dart';
+import 'package:flutter_advance_course/presentation/resources/route_manager.dart';
 import 'package:flutter_advance_course/presentation/resources/string_manager.dart';
 import 'package:flutter_advance_course/presentation/resources/value_manager.dart';
 
@@ -192,7 +193,9 @@ class _HomePageState extends State<HomePage> {
               shrinkWrap: true,
               children: List.generate(stores.length, (index) {
                 return InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed(Routes.storeDetailsRoute);
+                  },
                   child: Card(
                     elevation: AppSize.s4,
                     child: Image.network(

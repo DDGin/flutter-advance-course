@@ -62,10 +62,10 @@ class LoginViewModel extends BaseViewModel
                       StateRendererType.POPUP_ERROR_STATE, failure.message))
                 }, (data) {
       // Right -> Success (data)
-      // TODO: Bug: 19/4 Get blank screen when navigate from Login -> HomeView
-      // TODO: Error: Bad state: Cannot add new events after calling close
-      // TODO: Fix: 21/4 By remove inputState.add(ContentState) in function login in login_viewmodel
-      // TODO: Why:
+      // Bug: 19/4 Get blank screen when navigate from Login -> HomeView
+      // Error: Bad state: Cannot add new events after calling close
+      // Fix: 21/4 By remove inputState.add(ContentState) in function login in login_viewmodel
+      // Why:
       // inputState.add(ContentState()) => refresh state
       // refresh state (login view) + build home view
       // try to build home view while login view is refreshing => error

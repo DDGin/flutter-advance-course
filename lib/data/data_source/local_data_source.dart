@@ -3,12 +3,18 @@ import 'package:flutter_advance_course/data/network/error_handler.dart';
 import '../responses/responses.dart';
 
 const CACHE_HOME_KEY = "CACHE_HOME_KEY";
+const CACHE_STORE_DETAILS_KEY = "CACHE_STORE_DETAILS_KEY";
 const CACHE_HOME_INTERVAL = 60 * 1000; // 1 MINUTE IN MILLIS
 
 abstract class LocalDataSource {
   Future<HomeResponse> getHome();
 
+  Future<StoreDetailsResponse> getStoreDetails1();
+
   Future<void> saveHomeToCache(HomeResponse homeResponse);
+
+  Future<void> saveStoreDetailsToCache(
+      StoreDetailsResponse storeDetailsResponse);
 
   void clearCache();
 
@@ -20,14 +26,23 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<HomeResponse> getHome() async {
-    CacheItem? cacheItem = cacheMap[CACHE_HOME_KEY];
+    CacheItem? cachedItem = cacheMap[CACHE_HOME_KEY];
 
-    if (cacheItem != null) {
-      return cacheItem.data;
-
+    if (cachedItem != null && cachedItem.isValid(CACHE_HOME_INTERVAL)) {
       // return the response from cache
+      return cachedItem.data;
     } else {
       // return error that cache is not valid
+      throw ErrorHandler.handle(DataSource.CACHE_ERROR);
+    }
+  }
+
+  @override
+  Future<StoreDetailsResponse> getStoreDetails1() {
+    CacheItem? cachedItem = cacheMap[CACHE_STORE_DETAILS_KEY];
+    if (cachedItem != null && cachedItem.isValid(CACHE_HOME_INTERVAL)) {
+      return cachedItem.data;
+    } else {
       throw ErrorHandler.handle(DataSource.CACHE_ERROR);
     }
   }
@@ -38,13 +53,19 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
+  Future<void> saveStoreDetailsToCache(
+      StoreDetailsResponse storeDetailsResponse) async {
+    cacheMap[CACHE_STORE_DETAILS_KEY] = CacheItem(storeDetailsResponse);
+  }
+
+  @override
   void clearCache() {
-    // TODO: implement clearCache
+    cacheMap.clear();
   }
 
   @override
   void removeFromCache(String key) {
-    // TODO: implement removeFromCache
+    cacheMap.remove(key);
   }
 }
 
