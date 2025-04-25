@@ -60,4 +60,9 @@ class AppStrings {
   static const String storeDetails = "Store Details";
   static const String details = "Details";
   static const String about = "About";
+
+  static const String changeLang = "Change Language";
+  static const String contactUs = "Contact Us";
+  static const String inviteFriend = "Invite your friend";
+  static const String logout = "Logout";
 }
