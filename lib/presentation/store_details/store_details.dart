@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advance_course/app/di.dart';
 import 'package:flutter_advance_course/domain/model/model.dart';
@@ -52,7 +53,7 @@ class _StoreDetailsViewState extends State<StoreDetailsView> {
         leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),
             icon: Icon(Icons.arrow_back)),
-        title: Text(AppStrings.storeDetails),
+        title: Text(AppStrings.storeDetails).tr(),
         elevation: AppSize.s0,
         iconTheme: IconThemeData(
           color: ColorManager.white,
@@ -87,11 +88,11 @@ class _StoreDetailsViewState extends State<StoreDetailsView> {
               height: 250,
             ),
           ),
-          _getSection(AppStrings.details),
+          _getSection(AppStrings.details.tr()),
           _getInfoText(storeDetails.details),
-          _getSection(AppStrings.services),
+          _getSection(AppStrings.services.tr()),
           _getInfoText(storeDetails.services),
-          _getSection(AppStrings.about),
+          _getSection(AppStrings.about.tr()),
           _getInfoText(storeDetails.about)
         ],
       );

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advance_course/presentation/resources/color_manager.dart';
 import 'package:flutter_advance_course/presentation/resources/string_manager.dart';
@@ -23,13 +24,13 @@ class _MainViewState extends State<MainView> {
     SettingPage()
   ];
   List<String> titles = [
-    AppStrings.home,
-    AppStrings.search,
-    AppStrings.notifications,
-    AppStrings.settings
+    AppStrings.home.tr(),
+    AppStrings.search.tr(),
+    AppStrings.notifications.tr(),
+    AppStrings.settings.tr()
   ];
 
-  var _title = AppStrings.home;
+  var _title = AppStrings.home.tr();
   var _currentIndex = 0;
 
   @override
@@ -49,14 +50,14 @@ class _MainViewState extends State<MainView> {
         child: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.home), label: AppStrings.home),
+                icon: Icon(Icons.home), label: AppStrings.home.tr()),
             BottomNavigationBarItem(
-                icon: Icon(Icons.search), label: AppStrings.search),
+                icon: Icon(Icons.search), label: AppStrings.search.tr()),
             BottomNavigationBarItem(
                 icon: Icon(Icons.notifications),
-                label: AppStrings.notifications),
+                label: AppStrings.notifications.tr()),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: AppStrings.settings)
+                icon: Icon(Icons.settings), label: AppStrings.settings.tr())
           ],
           selectedItemColor: ColorManager.primary,
           unselectedItemColor: ColorManager.grey,

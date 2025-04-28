@@ -74,7 +74,7 @@ class LoginViewModel extends BaseViewModel
       // inputState.add(ContentState());
 
       // navigate to main screen after login
-      isUserLoggedInSuccessfullyStreamController.add("abc");
+      isUserLoggedInSuccessfullyStreamController.add("ABCDEFGH");
     });
   }
 

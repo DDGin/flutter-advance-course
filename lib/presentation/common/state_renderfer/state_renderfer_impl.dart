@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advance_course/data/mapper/mapper.dart';
@@ -16,7 +17,7 @@ class LoadingState extends FlowState {
   String message;
 
   LoadingState(this.stateRendererType, String? message)
-      : message = message ?? AppStrings.loading;
+      : message = message ?? AppStrings.loading.tr();
 
   @override
   String getMessage() => message;
@@ -116,7 +117,7 @@ extension FlowStateExtension on FlowState {
             retryActionFunction: retryActionFunction,
             resetFlowState: resetFlowState,
             message: getMessage(),
-            title: AppStrings.success,
+            title: AppStrings.success.tr(),
           );
         }
 

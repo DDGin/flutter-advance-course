@@ -100,3 +100,13 @@ initStoreDetailsModule() {
         () => StoreDetailsViewModel(instance()));
   }
 }
+
+resetAllModules() {
+  instance.reset(dispose: false);
+  initAppModule();
+  initLoginModule();
+  initRegisterModule();
+  initForgotPasswordModule();
+  initHomeModule();
+  initStoreDetailsModule();
+}

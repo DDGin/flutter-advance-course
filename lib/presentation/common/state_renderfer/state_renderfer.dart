@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advance_course/data/mapper/mapper.dart';
@@ -41,7 +42,7 @@ class StateRenderer extends StatelessWidget {
       String? title,
       required this.retryActionFunction,
       required this.resetFlowState})
-      : message = message ?? AppStrings.loading,
+      : message = message ?? AppStrings.loading.tr(),
         title = title ?? EMPTYSTR,
         super(key: key);
 
@@ -59,14 +60,14 @@ class StateRenderer extends StatelessWidget {
         return _getPopUpDiaLog(context, [
           _getAnimatedImage(JsonAssets.errorAni),
           _getMessage(message),
-          _getRetryButton(AppStrings.ok, context)
+          _getRetryButton(AppStrings.ok.tr(), context)
         ]);
       case StateRendererType.POPUP_SUCCESS:
         return _getPopUpDiaLog(context, [
           _getAnimatedImage(JsonAssets.successAni),
           _getMessage(title),
           _getMessage(message),
-          _getRetryButton(AppStrings.ok, context)
+          _getRetryButton(AppStrings.ok.tr(), context)
         ]);
       case StateRendererType.FULL_SCREEN_LOADING_PAGE:
         return _getItemsInColumn(
@@ -75,7 +76,7 @@ class StateRenderer extends StatelessWidget {
         return _getItemsInColumn([
           _getAnimatedImage(JsonAssets.errorAni),
           _getMessage(message),
-          _getRetryButton(AppStrings.retryAgain, context)
+          _getRetryButton(AppStrings.retryAgain.tr(), context)
         ]);
       case StateRendererType.CONTENT_SCREEN_STATE:
         return Container(

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_advance_course/app/app_prefs.dart';
@@ -40,13 +41,15 @@ class _LoginViewState extends State<LoginView> {
     _passwordController
         .addListener(() => _viewModel.setPassword(_passwordController.text));
     _viewModel.isUserLoggedInSuccessfullyStreamController.stream
-        .listen((isUserLoggedIn) {
+        .listen((token) {
       // navigate to main screen
       // https://stackoverflow.com/questions/56273737/schedulerbinding-vs-widgetsbinding
       // NOT: remove "?"
 
       SchedulerBinding.instance?.addPostFrameCallback((_) {
         _appPreferences.setUserLoggedIn();
+        _appPreferences.setToken(token);
+        resetAllModules();
         Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
       });
     });
@@ -104,11 +107,11 @@ class _LoginViewState extends State<LoginView> {
                         keyboardType: TextInputType.emailAddress,
                         controller: _userNameController,
                         decoration: InputDecoration(
-                            labelText: AppStrings.username,
-                            hintText: AppStrings.username,
+                            labelText: AppStrings.username.tr(),
+                            hintText: AppStrings.username.tr(),
                             errorText: (snapshot.data ?? true)
                                 ? null
-                                : AppStrings.usernameError),
+                                : AppStrings.invalidUsername.tr()),
                       );
                     }),
               ),
@@ -123,11 +126,11 @@ class _LoginViewState extends State<LoginView> {
                         keyboardType: TextInputType.visiblePassword,
                         controller: _passwordController,
                         decoration: InputDecoration(
-                            labelText: AppStrings.password,
-                            hintText: AppStrings.password,
+                            labelText: AppStrings.password.tr(),
+                            hintText: AppStrings.password.tr(),
                             errorText: (snapshot.data ?? true)
                                 ? null
-                                : AppStrings.passwordError),
+                                : AppStrings.invalidPassword.tr()),
                       );
                     }),
               ),
@@ -151,7 +154,7 @@ class _LoginViewState extends State<LoginView> {
                                       _viewModel.login();
                                     }
                                   : null,
-                              child: Text(AppStrings.login)),
+                              child: Text(AppStrings.login).tr()),
                         );
                       })),
               Padding(
@@ -170,7 +173,7 @@ class _LoginViewState extends State<LoginView> {
                           AppStrings.registerText,
                           style: Theme.of(context).textTheme.titleMedium,
                           textAlign: TextAlign.end,
-                        )),
+                        ).tr()),
                     TextButton(
                         onPressed: () {
                           Navigator.pushNamed(
@@ -180,7 +183,7 @@ class _LoginViewState extends State<LoginView> {
                           AppStrings.forgetPassword,
                           style: Theme.of(context).textTheme.titleMedium,
                           textAlign: TextAlign.end,
-                        )),
+                        ).tr()),
                   ],
                 ),
               )
